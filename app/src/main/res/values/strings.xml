@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">PruebasAndroidDiseño</string>
+    <string name="iconoDescripcion">Esto es el icono de la aplicacion</string>
+    <string name="titulo">{Titulo Programa}</string>
 </resources>
