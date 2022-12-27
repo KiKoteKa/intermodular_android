@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import zubkov.vadim.pruebasandroiddiseo.Screens.Homes.HomeScreenOne
 import zubkov.vadim.pruebasandroiddiseo.Screens.Logins.LoginScreenOne
 import zubkov.vadim.pruebasandroiddiseo.Screens.Registers.RegisterScreenOne
 import zubkov.vadim.pruebasandroiddiseo.Screens.SplashScreen.SplashScreenOne
@@ -20,6 +21,9 @@ fun CustomNavigator() {
         }
         composable(route = Routes.Register.route) {
             RegisterScreenOne(navigationController = navigationController)
+        }
+        composable(route = Routes.Home.route) {
+            HomeScreenOne(navigationController = navigationController)
         }
     }
 }

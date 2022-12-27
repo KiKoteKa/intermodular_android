@@ -6,6 +6,7 @@ import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -25,6 +26,7 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.navigation.NavHostController
+import zubkov.vadim.pruebasandroiddiseo.Navigation.Routes
 import zubkov.vadim.pruebasandroiddiseo.R
 
 @Composable
@@ -51,7 +53,7 @@ fun Inicio(state: MutableTransitionState<Boolean>, navigationController: NavHost
             contentDescription = stringResource(id = R.string.iconoDescripcion),
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.matchParentSize(),
-            alpha = 0.5F
+            alpha = if (isSystemInDarkTheme()) 0.5F else 0.8f
         )
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             MainLogin(state = state,navigationController)
@@ -65,12 +67,14 @@ fun MainLogin(state: MutableTransitionState<Boolean>, navigationController: NavH
         visibleState = state,
         enter = fadeIn(
             animationSpec = tween(
-                durationMillis = 2500,
+                delayMillis = 400,
+                durationMillis = 2700,
                 easing = LinearOutSlowInEasing
             )
         ) + slideInVertically(
             animationSpec = tween(
-                durationMillis = 2500,
+                delayMillis = 400,
+                durationMillis = 2700,
                 easing = LinearOutSlowInEasing
             )
         )
@@ -97,7 +101,8 @@ fun MainLogin(state: MutableTransitionState<Boolean>, navigationController: NavH
                 }
             }
             Spacer(modifier = Modifier.padding(6.dp))
-            ClickableText(navigationController)        }
+            ClickableText(navigationController)
+        }
     }
 }
 
@@ -184,7 +189,9 @@ fun ButtonLogin(navigationController: NavHostController) {
 
 @Composable
 fun ClickableText(navigationController: NavHostController){
-    Row(){
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ){
         ClickableText(
             text = AnnotatedString("Contraseña Olvidada"),
             onClick = {
@@ -201,7 +208,7 @@ fun ClickableText(navigationController: NavHostController){
         ClickableText(
             text = AnnotatedString("Registrarse"),
             onClick = {
-
+                navigationController.navigate(Routes.Register.route)
             },
             style = TextStyle(
                 color = Color(0xFFDAD3C8)
