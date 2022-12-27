@@ -1,6 +1,5 @@
 package zubkov.vadim.pruebasandroiddiseo.Screens.Logins
 
-import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -9,29 +8,27 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.navigation.NavHostController
 import zubkov.vadim.pruebasandroiddiseo.R
 
 @Composable
-fun LoginScreenOne(){
+fun LoginScreenOne(navigationController: NavHostController) {
     var state = remember {
         MutableTransitionState(false).apply {
             targetState = true
@@ -42,12 +39,12 @@ fun LoginScreenOne(){
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Inicio(state)
+        Inicio(state,navigationController)
     }
 }
 
 @Composable
-fun Inicio(state: MutableTransitionState<Boolean>){
+fun Inicio(state: MutableTransitionState<Boolean>, navigationController: NavHostController){
     Box(modifier = Modifier.fillMaxSize()){
         Image(
             painterResource(R.drawable.background),
@@ -57,71 +54,23 @@ fun Inicio(state: MutableTransitionState<Boolean>){
             alpha = 0.5F
         )
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-            AnimacionInicial(state = state)
+            MainLogin(state = state,navigationController)
         }
     }
 }
 
 @Composable
-fun AnimacionInicial(state: MutableTransitionState<Boolean>) {
+fun MainLogin(state: MutableTransitionState<Boolean>, navigationController: NavHostController){
     AnimatedVisibility(
         visibleState = state,
         enter = fadeIn(
             animationSpec = tween(
-                durationMillis = 3000,
-                easing = LinearEasing
-            )
-        ) + slideInHorizontally(
-            animationSpec = tween(
-                durationMillis = 3000,
-                easing = LinearOutSlowInEasing
-            )
-        ),
-        exit = fadeOut(
-            animationSpec = tween(
-                durationMillis = 2000,
-                easing = LinearOutSlowInEasing
-            )
-        )
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ){
-            Text(
-                text = "Bienvenido a {Titulo Programa}",
-                fontSize = 23.sp,
-                fontFamily = FontFamily.Default,
-                color = Color(0xFFDAD3C8)
-            )
-        }
-    }
-
-    var stateC = remember {
-        MutableTransitionState(false).apply {
-            state.targetState = false
-            this.targetState = true
-        }
-    }
-
-    MainLogin(state = stateC)
-}
-
-@Composable
-fun MainLogin(state: MutableTransitionState<Boolean>){
-    AnimatedVisibility(
-        visibleState = state,
-        enter = fadeIn(
-            animationSpec = tween(
-                delayMillis = 5300,
-                durationMillis = 2000,
+                durationMillis = 2500,
                 easing = LinearOutSlowInEasing
             )
         ) + slideInVertically(
             animationSpec = tween(
-                delayMillis = 5300,
-                durationMillis = 2000,
+                durationMillis = 2500,
                 easing = LinearOutSlowInEasing
             )
         )
@@ -144,25 +93,23 @@ fun MainLogin(state: MutableTransitionState<Boolean>){
                     Spacer(modifier = Modifier.padding(10.dp))
                     Contrasenya()
                     Spacer(modifier = Modifier.padding(10.dp))
-                    ButtonLogin()
+                    ButtonLogin(navigationController)
                 }
             }
             Spacer(modifier = Modifier.padding(6.dp))
-            ClickableText()
-        }
+            ClickableText(navigationController)        }
     }
 }
 
 @Composable
 fun Imagen_Login(){
-    Card(
+    Box(
         Modifier
             .height(250.dp)
-            .width(250.dp),
-        shape = CircleShape,
+            .width(250.dp)
     ){
         Image(
-            painterResource(R.drawable.foto),
+            painterResource(R.drawable.fotoi_inicio),
             contentDescription = stringResource(id = R.string.iconoDescripcion),
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
@@ -216,12 +163,13 @@ fun Contrasenya(){
             unfocusedBorderColor = Color(0xFFDAD3C8)
         ),
         shape = CircleShape,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        visualTransformation = PasswordVisualTransformation()
     )
 }
 
 @Composable
-fun ButtonLogin(){
+fun ButtonLogin(navigationController: NavHostController) {
     Button(
         onClick = {
 
@@ -235,7 +183,7 @@ fun ButtonLogin(){
 }
 
 @Composable
-fun ClickableText(){
+fun ClickableText(navigationController: NavHostController){
     Row(){
         ClickableText(
             text = AnnotatedString("Contraseña Olvidada"),
