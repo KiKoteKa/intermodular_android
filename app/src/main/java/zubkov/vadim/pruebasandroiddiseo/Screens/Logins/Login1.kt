@@ -6,9 +6,12 @@ import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -25,6 +28,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import androidx.navigation.NavHostController
 import zubkov.vadim.pruebasandroiddiseo.Navigation.Routes
 import zubkov.vadim.pruebasandroiddiseo.R
@@ -195,7 +200,6 @@ fun ClickableText(navigationController: NavHostController){
         ClickableText(
             text = AnnotatedString("Contraseña Olvidada"),
             onClick = {
-
             },
             style = TextStyle(
                 color = Color(0xFFDAD3C8)
@@ -215,5 +219,52 @@ fun ClickableText(navigationController: NavHostController){
             )
         )
     }
+}
 
+@Composable
+fun PopUpBox(){
+    val openDialog = remember { mutableStateOf(false) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Box {
+            val popupWidth = 300.dp
+            val popupHeight = 100.dp
+
+            if (openDialog.value) {
+                Popup(
+                    alignment = Alignment.TopCenter,
+                    properties = PopupProperties()
+                ) {
+                    Box(
+                        Modifier
+                            .size(popupWidth, popupHeight)
+                            .padding(top = 5.dp)
+                            .background(Color.Green, RoundedCornerShape(10.dp))
+                            .border(1.dp, color = Color.Black, RoundedCornerShape(10.dp))
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = 20.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = "Welcome to Geeks for Geeks",
+                                color = Color.White,
+                                modifier = Modifier.padding(vertical = 5.dp),
+                                fontSize = 16.sp
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

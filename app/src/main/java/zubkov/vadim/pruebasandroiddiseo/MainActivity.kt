@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import zubkov.vadim.pruebasandroiddiseo.Navigation.CustomNavigator
 import zubkov.vadim.pruebasandroiddiseo.Screens.Logins.LoginScreenOne
+import zubkov.vadim.pruebasandroiddiseo.Screens.MapScreen.MapaGoogle
 import zubkov.vadim.pruebasandroiddiseo.ui.theme.PruebasAndroidDiseñoTheme
 
 class MainActivity : ComponentActivity() {
@@ -24,7 +25,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    CustomNavigator()
+                    MapaGoogle()
+                    //CustomNavigator()
                 }
             }
         }
