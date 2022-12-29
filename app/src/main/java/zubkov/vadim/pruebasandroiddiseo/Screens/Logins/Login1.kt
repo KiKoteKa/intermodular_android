@@ -182,7 +182,7 @@ fun Contrasenya(){
 fun ButtonLogin(navigationController: NavHostController) {
     Button(
         onClick = {
-
+            navigationController.navigate(Routes.Home.route)
         },
         shape = CircleShape,
         modifier = Modifier.fillMaxWidth(),

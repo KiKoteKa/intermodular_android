@@ -13,9 +13,10 @@
         android:theme="@style/Theme.PruebasAndroidDiseño"
         tools:targetApi="31">
 
+        <!--Faltaria para que funcione introducir la api_key nueva que generé-->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBZ5xZ1EQe6oyTb9RDkrlSqWDd2RPiIC_Y"/>
+            android:value=""/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

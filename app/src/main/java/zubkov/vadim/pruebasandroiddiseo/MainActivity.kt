@@ -25,8 +25,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MapaGoogle()
-                    //CustomNavigator()
+                    //MapaGoogle()
+                    CustomNavigator()
                 }
             }
         }
