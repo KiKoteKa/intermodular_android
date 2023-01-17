@@ -45,12 +45,9 @@ fun MapaGoogle(navigationController: NavHostController) {
             Modifier
                 .height(608.dp)
         ){
-            val cameraPositionState= rememberCameraPositionState()
+            Mapa(){
 
-            GoogleMap(
-                modifier = Modifier.fillMaxSize(),
-                cameraPositionState=cameraPositionState
-            )
+            }
         }
     }
 }
@@ -66,11 +63,11 @@ fun Mapa(onReady:(GoogleMap) -> Unit){
         factory = {
             mapView.apply {
                 mapView.getMapAsync { googleMap ->
-                    val nivelZoom = 15f
-                    val posicion = LatLng(19.85,-90.46)
+                    val nivelZoom = 5f
+                    val posicion = LatLng( 40.4165000,-3.7025600)
 
                     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posicion, nivelZoom ))
-                    googleMap.addMarker(MarkerOptions().position(posicion))
+                    //googleMap.addMarker(MarkerOptions().position(posicion))
                 }
             }
         }

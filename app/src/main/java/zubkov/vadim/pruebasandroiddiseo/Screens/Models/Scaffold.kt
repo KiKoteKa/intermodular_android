@@ -12,13 +12,16 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavHostController
 import zubkov.vadim.pruebasandroiddiseo.Navigation.Routes
 
 @Composable
 fun TopBarContent(){
-    TopAppBar() {
+    TopAppBar(
+        backgroundColor = Color(0xFF3F826D)
+    ) {
         Box(
             Modifier
                 .fillMaxSize(),
@@ -32,7 +35,7 @@ fun TopBarContent(){
 @Composable
 fun BottomBarContent(navigationController: NavHostController){
     BottomNavigation(
-
+        backgroundColor = Color(0xFF3F826D)
     ) {
         BottomNavigationItem(
             selected = false,
