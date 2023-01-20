@@ -25,8 +25,6 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.google.android.gms.common.internal.service.Common
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.delay
 import zubkov.vadim.pruebasandroiddiseo.Navigation.CustomNavigator
 import zubkov.vadim.pruebasandroiddiseo.Navigation.Routes
@@ -46,30 +44,15 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    FeatureThatRequiresLocationPermission()
-                    //CustomNavigator()
+                    //FeatureThatRequiresLocationPermission()
+                    CustomNavigator()
                     //MapaGoogle()
                 }
             }
         }
     }
 }
-@OptIn(ExperimentalPermissionsApi::class)
-@Composable
-private fun FeatureThatRequiresLocationPermission() {
 
-    val cameraPermissionState = rememberPermissionState(
-        android.Manifest.permission.ACCESS_FINE_LOCATION
-    )
-
-    if (cameraPermissionState.status.isGranted) {
-        CustomNavigator()
-    } else {
-        LaunchedEffect(cameraPermissionState.status.shouldShowRationale){
-            cameraPermissionState.launchPermissionRequest()
-        }
-    }
-}
 
 @Preview(showBackground = true)
 @Composable

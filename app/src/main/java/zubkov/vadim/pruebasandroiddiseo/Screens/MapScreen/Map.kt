@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -21,6 +22,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleObserver
 import androidx.navigation.NavHostController
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
@@ -29,24 +34,32 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.rememberCameraPositionState
+import zubkov.vadim.pruebasandroiddiseo.Navigation.CustomNavigator
 import zubkov.vadim.pruebasandroiddiseo.Screens.Models.BottomBarContent
 import zubkov.vadim.pruebasandroiddiseo.Screens.Models.TopBarContent
 
-private lateinit var gmap : GoogleMap
-
-
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun MapaGoogle(navigationController: NavHostController) {
+    val cameraPermissionState = rememberPermissionState(
+        Manifest.permission.ACCESS_FINE_LOCATION
+    )
     Scaffold(
         topBar = { TopBarContent()},
         bottomBar = { BottomBarContent(navigationController = navigationController)}
     ) {
-        Box(
-            Modifier
-                .height(608.dp)
-        ){
-            Mapa(){
+        if (cameraPermissionState.status.isGranted) {
+            Box(
+                Modifier
+                    .height(608.dp)
+            ){
+                Mapa(){
 
+                }
+            }
+        } else {
+            LaunchedEffect(!cameraPermissionState.status.isGranted){
+                cameraPermissionState.launchPermissionRequest()
             }
         }
     }
