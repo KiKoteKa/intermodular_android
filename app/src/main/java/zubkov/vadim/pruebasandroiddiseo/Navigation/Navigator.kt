@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.android.gms.location.FusedLocationProviderClient
 import zubkov.vadim.pruebasandroiddiseo.Screens.Homes.HomeScreenOne
 import zubkov.vadim.pruebasandroiddiseo.Screens.Logins.LoginScreenOne
 import zubkov.vadim.pruebasandroiddiseo.Screens.MapScreen.MapaGoogle

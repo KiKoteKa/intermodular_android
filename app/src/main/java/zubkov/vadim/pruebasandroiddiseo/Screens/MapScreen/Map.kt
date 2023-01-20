@@ -1,23 +1,18 @@
 package zubkov.vadim.pruebasandroiddiseo.Screens.MapScreen
 
 import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleObserver
@@ -25,41 +20,56 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.permissions.shouldShowRationale
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
-import com.google.maps.android.compose.rememberCameraPositionState
-import zubkov.vadim.pruebasandroiddiseo.Navigation.CustomNavigator
+import com.google.maps.android.compose.MapUiSettings
+import com.kchienja.jetmap.MainActivityViewModel
 import zubkov.vadim.pruebasandroiddiseo.Screens.Models.BottomBarContent
 import zubkov.vadim.pruebasandroiddiseo.Screens.Models.TopBarContent
+
+
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun MapaGoogle(navigationController: NavHostController) {
-    val cameraPermissionState = rememberPermissionState(
-        Manifest.permission.ACCESS_FINE_LOCATION
+    val locationPermissionState = rememberPermissionState(
+        Manifest.permission.ACCESS_COARSE_LOCATION
     )
+
     Scaffold(
-        topBar = { TopBarContent()},
+        topBar = { TopBarContent() },
         bottomBar = { BottomBarContent(navigationController = navigationController)}
     ) {
-        if (cameraPermissionState.status.isGranted) {
+        if (locationPermissionState.status.isGranted) {
             Box(
                 Modifier
                     .height(608.dp)
             ){
-                Mapa(){
+                val uiSettings = remember {
+                    MapUiSettings(myLocationButtonEnabled = true)
+                }
+                val properties by remember {
+                    mutableStateOf(MapProperties(isMyLocationEnabled = true))
+                }
+
+                GoogleMap(
+                    modifier = Modifier.fillMaxSize(),
+                    properties = properties,
+                    uiSettings = uiSettings
+                ){
 
                 }
+                /*Mapa(){
+
+                }*/
             }
         } else {
-            LaunchedEffect(!cameraPermissionState.status.isGranted){
-                cameraPermissionState.launchPermissionRequest()
+            LaunchedEffect(!locationPermissionState.status.isGranted){
+                locationPermissionState.launchPermissionRequest()
             }
         }
     }
