@@ -57,7 +57,7 @@ fun InicioRegister(state: MutableTransitionState<Boolean>, navigationController:
     Box(modifier = Modifier.fillMaxSize()){
         Image(
             painterResource(R.drawable.background),
-            contentDescription = stringResource(id = R.string.iconoDescripcion),
+            contentDescription = stringResource(id = R.string.icono_descripcion),
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.matchParentSize(),
             alpha = if (isSystemInDarkTheme()) 0.5F else 0.8f

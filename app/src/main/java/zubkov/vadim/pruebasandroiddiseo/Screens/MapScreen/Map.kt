@@ -45,9 +45,7 @@ fun MapaGoogle(navigationController: NavHostController) {
             Modifier
                 .height(608.dp)
         ){
-            GoogleMap(
-                modifier = Modifier.fillMaxSize(),
-            ){
+            Mapa(){
 
             }
         }

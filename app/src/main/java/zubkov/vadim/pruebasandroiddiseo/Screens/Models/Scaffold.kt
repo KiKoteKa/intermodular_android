@@ -27,7 +27,7 @@ fun TopBarContent(){
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ){
-            Text("{Titulo Programa}")
+            Text("Titulo Programa")
         }
     }
 }

@@ -63,7 +63,7 @@ fun Main(alphaAnim: Float){
         ){
             Image(
                 painterResource(zubkov.vadim.pruebasandroiddiseo.R.drawable.fotoi_inicio),
-                contentDescription = stringResource(id = zubkov.vadim.pruebasandroiddiseo.R.string.iconoDescripcion),
+                contentDescription = stringResource(id = zubkov.vadim.pruebasandroiddiseo.R.string.icono_descripcion),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
