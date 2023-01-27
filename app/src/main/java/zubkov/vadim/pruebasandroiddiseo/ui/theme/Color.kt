@@ -2,6 +2,8 @@ package zubkov.vadim.pruebasandroiddiseo.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+val colorPerfil = Color(0xFFCdca28)//Color(0xFFA0E4CB)
+
 val Purple200 = Color(0xFFBB86FC)
 val Purple500 = Color(0xFF6200EE)
 val Purple700 = Color(0xFF3700B3)

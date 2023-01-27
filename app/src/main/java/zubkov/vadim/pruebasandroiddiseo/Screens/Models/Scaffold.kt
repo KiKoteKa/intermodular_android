@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,7 +40,7 @@ fun BottomBarContent(navigationController: NavHostController){
             onClick = { navigationController.navigate(Routes.Home.route) },
             icon = {
                 Icon(
-                    imageVector = Icons.Default.Email,
+                    imageVector = Icons.Default.Home,
                     contentDescription = ""
                 )
             }
@@ -52,7 +50,7 @@ fun BottomBarContent(navigationController: NavHostController){
             onClick = { navigationController.navigate(Routes.Gmap.route) },
             icon = {
                 Icon(
-                    imageVector = Icons.Default.Person,
+                    imageVector = Icons.Default.Place,
                     contentDescription = ""
                 )
             }
@@ -62,7 +60,7 @@ fun BottomBarContent(navigationController: NavHostController){
             onClick = { navigationController.navigate(Routes.Users.route) },
             icon = {
                 Icon(
-                    imageVector = Icons.Default.Favorite,
+                    imageVector = Icons.Default.Person,
                     contentDescription = ""
                 )
             }
