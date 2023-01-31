@@ -22,11 +22,11 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import zubkov.vadim.pruebasandroiddiseo.Model.Ruta
 import zubkov.vadim.pruebasandroiddiseo.R
-import zubkov.vadim.pruebasandroiddiseo.Screens.Homes.ContentRutas
 
 @Composable
-fun MainCard(contendioRutas: ContentRutas){
+fun MainCard(contendioRutas: Ruta){
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -85,7 +85,7 @@ fun divisor(modifier: Modifier){
 }
 
 @Composable
-fun TipoRuta(tipoRuta: ContentRutas){
+fun TipoRuta(tipoRuta: Ruta){
     var imagenes = when (tipoRuta.tipoDeRuta){
         1 -> R.drawable.person
         else -> R.drawable.person
@@ -103,7 +103,7 @@ fun TipoRuta(tipoRuta: ContentRutas){
 }
 
 @Composable
-fun TituloRuta(tituloRuta: ContentRutas){
+fun TituloRuta(tituloRuta: Ruta){
     Text(
         text = tituloRuta.nombre,
         fontSize = 17.sp,
@@ -113,7 +113,7 @@ fun TituloRuta(tituloRuta: ContentRutas){
 }
 
 @Composable
-fun Distancia(distancia: ContentRutas){
+fun Distancia(distancia: Ruta){
     Box(){
         Column(){
             Text(
@@ -135,7 +135,7 @@ fun Distancia(distancia: ContentRutas){
 }
 
 @Composable
-fun Desnivel(desnivel: ContentRutas){
+fun Desnivel(desnivel: Ruta){
     Box(){
         Column() {
             Text(
@@ -156,7 +156,7 @@ fun Desnivel(desnivel: ContentRutas){
 }
 
 @Composable
-fun Imagen(imagen: ContentRutas){
+fun Imagen(imagen: Ruta){
     var imagenes = when (imagen.imagen){
         1 -> R.drawable.foto
         2 -> R.drawable.background
@@ -175,7 +175,7 @@ fun Imagen(imagen: ContentRutas){
 }
 
 @Composable
-fun Usuario(usuario: ContentRutas,icon: ContentRutas){
+fun Usuario(usuario: Ruta,icon: Ruta){
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -205,7 +205,7 @@ fun Usuario(usuario: ContentRutas,icon: ContentRutas){
 }
 
 @Composable
-fun Likes(likes: ContentRutas){
+fun Likes(likes: Ruta){
     Row(
         verticalAlignment = Alignment.CenterVertically
     ){
