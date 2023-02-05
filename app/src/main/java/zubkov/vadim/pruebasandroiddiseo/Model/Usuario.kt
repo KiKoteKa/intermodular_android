@@ -9,6 +9,6 @@ data class Usuario (
     val apellidos: String,
     val email: String,
     val nick: String,
-    val fechaNacimiento: String,
+    val fechaNacimiento: Date,
     val imagen:Int = R.drawable.fotoperfil
 )

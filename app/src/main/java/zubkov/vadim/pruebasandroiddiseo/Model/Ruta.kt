@@ -1,13 +1,17 @@
 package zubkov.vadim.pruebasandroiddiseo.Model
 
+import java.util.*
+
 data class Ruta (
-        val nombre:String,
-        val imagen: Int,
-        val km: Double,
-        val lat: Double,
+        val id : String,
+        val fecha : Date,
+        val nombre : String,
+        val categoria: Int,
+        val distancia: Double,
         val dificultad: Int,
-        val tipoDeRuta: Int,
-        val usuarioPublicado: String,
-        val rating: Double,
-        val icon: Int
+        val duracion : Int,
+        val descripcion : String,
+        val usuarioPublicado: Usuario,
+        val imagen: Int,
+        val valoracion : Double
 )

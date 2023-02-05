@@ -30,10 +30,11 @@ import zubkov.vadim.pruebasandroiddiseo.Model.Usuario
 import zubkov.vadim.pruebasandroiddiseo.Screens.Models.BottomBarContent
 import zubkov.vadim.pruebasandroiddiseo.Screens.Models.TopBarContent
 import java.text.SimpleDateFormat
+import java.util.*
 
 @Composable
 fun UsersScreen(navigationController: NavHostController) {
-    val user = Usuario("123","Pepito","Alonso","ejemplo@gmail.com","Pipa","14/02/2000")
+    val user = Usuario("123","Pepito","Alonso","ejemplo@gmail.com","Pipa", Date())
     Scaffold(
         topBar = { TopBarContent() },
         bottomBar = { BottomBarContent(navigationController) }
@@ -69,7 +70,7 @@ private fun EstructuraVentanaUser(usuario:Usuario) {
             Texto(usuario.nombre, " Nombre")
             Texto(usuario.apellidos, " Apellidos", Icons.Default.AccountBox)
             Texto(usuario.email, " Email", Icons.Default.Email)
-            Texto(usuario.fechaNacimiento, " F. Nacimiento", Icons.Default.DateRange)
+            Texto(usuario.fechaNacimiento.toString(), " F. Nacimiento", Icons.Default.DateRange)
             Separador()
             Boton(" Editar perfil", Icons.Default.Edit)
     }
