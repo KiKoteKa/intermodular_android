@@ -5,6 +5,10 @@ sealed class Routes(val route: String) {
     object Login: Routes("login")
     object Register: Routes("register")
     object Home: Routes("home")
+    object Card: Routes("card/{cardId}")
     object Gmap: Routes("gmap")
     object Users: Routes("users")
+    object NewRuta: Routes("newruta")
+    object UserDetail: Routes("userdetail/{userId}/{editable}")
+    object User: Routes("user/{userId}/{editable}")
 }

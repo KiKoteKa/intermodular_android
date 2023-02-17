@@ -4,7 +4,7 @@ import zubkov.vadim.pruebasandroiddiseo.R
 import java.util.*
 
 data class Usuario (
-    val id: String,
+    val id: Int,
     val nombre: String,
     val apellidos: String,
     val email: String,

@@ -1,4 +1,4 @@
-package zubkov.vadim.pruebasandroiddiseo.Screens.Homes
+package zubkov.vadim.pruebasandroiddiseo.Screens.Rutas
 
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.LiveData
@@ -24,12 +24,17 @@ class FilterViewModel:ViewModel() {
     var listado: LiveData<List<Ruta>> = _listado
     fun updateListado(value:List<Ruta>) {
         _listado.value = value
+        _countListado.value = value.size;
     }
 
-    private val _filtroEstrellas = MutableLiveData<ClosedFloatingPointRange<Float>>()
-    var filtroEstrellas: LiveData<ClosedFloatingPointRange<Float>> = _filtroEstrellas
-    fun updateFiltroEstrellas(value:ClosedFloatingPointRange<Float>) {
-        _filtroEstrellas.value = value
+    private val _countListado = MutableLiveData<Int>()
+    var countListado: LiveData<Int> = _countListado
+
+
+    private val _filtroDificultad = MutableLiveData<ClosedFloatingPointRange<Float>>()
+    var filtroDificultad: LiveData<ClosedFloatingPointRange<Float>> = _filtroDificultad
+    fun updateFiltroDificultad(value:ClosedFloatingPointRange<Float>) {
+        _filtroDificultad.value = value
     }
 
     private val _filtroDistancia = MutableLiveData<ClosedFloatingPointRange<Float>>()
@@ -43,6 +48,8 @@ class FilterViewModel:ViewModel() {
     fun updateFiltroActividades(value:MutableList<String>) {
         _filtroActividades.value = value
     }
+
+
     fun addActivity(activity:String){
         _filtroActividades.value!!.remove(activity)
         _filtroActividades.value!!.add(activity)
@@ -54,4 +61,5 @@ class FilterViewModel:ViewModel() {
     fun activeActivity(activity:String):Boolean{
         return _filtroActividades.value!!.contains(activity)
     }
+
 }

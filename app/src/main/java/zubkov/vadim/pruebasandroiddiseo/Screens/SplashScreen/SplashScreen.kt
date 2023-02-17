@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.delay
 import zubkov.vadim.pruebasandroiddiseo.Navigation.Routes
-import zubkov.vadim.pruebasandroiddiseo.ui.theme.Purple700
 
 @Composable
 fun SplashScreenOne(navigationController: NavHostController) {
@@ -51,7 +50,7 @@ fun SplashScreenOne(navigationController: NavHostController) {
 fun Main(alphaAnim: Float){
     Box(
         modifier = Modifier
-            .background(if (isSystemInDarkTheme()) Color.Black else Purple700)
+            .background(if (isSystemInDarkTheme()) Color.Black else Color.Gray)
             .fillMaxSize()
             .alpha(alphaAnim),
         contentAlignment = Alignment.Center

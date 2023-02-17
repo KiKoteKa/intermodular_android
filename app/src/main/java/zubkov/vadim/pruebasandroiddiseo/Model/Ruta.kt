@@ -3,7 +3,7 @@ package zubkov.vadim.pruebasandroiddiseo.Model
 import java.util.*
 
 data class Ruta (
-        val id : String,
+        val id : Int,
         val fecha : Date,
         val nombre : String,
         val categoria: Int,
@@ -12,6 +12,6 @@ data class Ruta (
         val duracion : Int,
         val descripcion : String,
         val usuarioPublicado: Usuario,
-        val imagen: Int,
+        val imagenes: List<Int>,
         val valoracion : Double
 )

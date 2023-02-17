@@ -2,7 +2,6 @@ package zubkov.vadim.pruebasandroiddiseo.Screens.MapScreen
 
 import android.Manifest
 import android.os.Bundle
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -27,9 +26,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
-import com.kchienja.jetmap.MainActivityViewModel
-import zubkov.vadim.pruebasandroiddiseo.Screens.Models.BottomBarContent
-import zubkov.vadim.pruebasandroiddiseo.Screens.Models.TopBarContent
+import zubkov.vadim.pruebasandroiddiseo.Screens.Scaffold.BottomBarContent
+import zubkov.vadim.pruebasandroiddiseo.Screens.Scaffold.TopBarContent
 
 
 

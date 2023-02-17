@@ -1,7 +1,6 @@
 package zubkov.vadim.pruebasandroiddiseo.Screens.Logins
 
 import androidx.compose.animation.*
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
