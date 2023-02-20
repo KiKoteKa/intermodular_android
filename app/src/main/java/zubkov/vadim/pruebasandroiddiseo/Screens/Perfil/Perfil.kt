@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import zubkov.vadim.pruebasandroiddiseo.Dto.StaticData
+import zubkov.vadim.pruebasandroiddiseo.GlobalViewModel
 import zubkov.vadim.pruebasandroiddiseo.Navigation.Routes
 import zubkov.vadim.pruebasandroiddiseo.Screens.Scaffold.CustomBottomBar
 import zubkov.vadim.pruebasandroiddiseo.Screens.Scaffold.TopBarContent
@@ -20,7 +21,7 @@ import zubkov.vadim.pruebasandroiddiseo.Screens.Perfil.Components.PerfilUsuario
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun UsersScreen(navigationController: NavHostController) {
+fun UsersScreen(navigationController: NavHostController,globalViewModel: GlobalViewModel) {
     Scaffold(
         topBar = { TopBarContent() },
         bottomBar = { CustomBottomBar(navigationController) },
@@ -46,7 +47,15 @@ fun UsersScreen(navigationController: NavHostController) {
             Column(horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxSize().border(border = BorderStroke(0.3.dp, Color.Black)))
             {
-                PerfilUsuario(navigationController, StaticData().getUsuarios().get(0),true)
+                if (globalViewModel.usuarioRegistrado == null){
+                    Text("Haz login para ver tu perfil")
+                }else {
+                    PerfilUsuario(
+                        navigationController,
+                        globalViewModel,
+                        globalViewModel.usuarioRegistrado.value!!
+                    )
+                }
             }
         }
     }

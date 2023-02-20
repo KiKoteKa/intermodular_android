@@ -29,6 +29,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import zubkov.vadim.pruebasandroiddiseo.GlobalViewModel
 import zubkov.vadim.pruebasandroiddiseo.Navigation.Routes
 import zubkov.vadim.pruebasandroiddiseo.R
 import zubkov.vadim.pruebasandroiddiseo.Screens.Logins.*
@@ -37,7 +38,7 @@ import zubkov.vadim.pruebasandroiddiseo.Screens.Logins.MainLogin
 var comprobacionRapida = false
 
 @Composable
-fun RegisterScreenOne(navigationController: NavHostController) {
+fun RegisterScreenOne(navigationController: NavHostController,globalViewModel: GlobalViewModel) {
     var state = remember {
         MutableTransitionState(false).apply {
             targetState = true

@@ -30,11 +30,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import androidx.navigation.NavHostController
+import zubkov.vadim.pruebasandroiddiseo.GlobalViewModel
 import zubkov.vadim.pruebasandroiddiseo.Navigation.Routes
 import zubkov.vadim.pruebasandroiddiseo.R
 
 @Composable
-fun LoginScreenOne(navigationController: NavHostController) {
+fun LoginScreenOne(navigationController: NavHostController,globalViewModel: GlobalViewModel) {
     var state = remember {
         MutableTransitionState(false).apply {
             targetState = true
@@ -45,12 +46,12 @@ fun LoginScreenOne(navigationController: NavHostController) {
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Inicio(state,navigationController)
+        Inicio(state,navigationController,globalViewModel)
     }
 }
 
 @Composable
-fun Inicio(state: MutableTransitionState<Boolean>, navigationController: NavHostController){
+fun Inicio(state: MutableTransitionState<Boolean>, navigationController: NavHostController,globalViewModel: GlobalViewModel){
     Box(modifier = Modifier.fillMaxSize()){
         Image(
             painterResource(R.drawable.background),
@@ -60,13 +61,13 @@ fun Inicio(state: MutableTransitionState<Boolean>, navigationController: NavHost
             alpha = if (isSystemInDarkTheme()) 0.5F else 0.8f
         )
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-            MainLogin(state = state,navigationController)
+            MainLogin(state = state,navigationController,globalViewModel)
         }
     }
 }
 
 @Composable
-fun MainLogin(state: MutableTransitionState<Boolean>, navigationController: NavHostController){
+fun MainLogin(state: MutableTransitionState<Boolean>, navigationController: NavHostController,globalViewModel: GlobalViewModel){
     AnimatedVisibility(
         visibleState = state,
         enter = fadeIn(
@@ -101,7 +102,7 @@ fun MainLogin(state: MutableTransitionState<Boolean>, navigationController: NavH
                     Spacer(modifier = Modifier.padding(10.dp))
                     Contrasenya()
                     Spacer(modifier = Modifier.padding(10.dp))
-                    ButtonLogin(navigationController)
+                    ButtonLogin(navigationController,globalViewModel)
                 }
             }
             Spacer(modifier = Modifier.padding(6.dp))
@@ -178,9 +179,11 @@ fun Contrasenya(){
 }
 
 @Composable
-fun ButtonLogin(navigationController: NavHostController) {
+fun ButtonLogin(navigationController: NavHostController,globalViewModel: GlobalViewModel) {
+    val userId = 0
     Button(
         onClick = {
+            globalViewModel.loginUsuario(userId)
             navigationController.navigate(Routes.Home.route)
         },
         shape = CircleShape,

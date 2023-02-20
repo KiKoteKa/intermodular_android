@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import zubkov.vadim.pruebasandroiddiseo.Components.Tarjeta
 import zubkov.vadim.pruebasandroiddiseo.Dto.StaticData
+import zubkov.vadim.pruebasandroiddiseo.GlobalViewModel
 import zubkov.vadim.pruebasandroiddiseo.Model.Ruta
 import zubkov.vadim.pruebasandroiddiseo.Navigation.Routes
 import zubkov.vadim.pruebasandroiddiseo.Screens.Rutas.Models.*
@@ -24,7 +25,7 @@ import zubkov.vadim.pruebasandroiddiseo.Screens.Scaffold.CustomBottomBar
 
 
 @Composable
-fun HomeScreenOne(navigationController: NavHostController) {
+fun HomeScreenOne(navigationController: NavHostController,globalViewModel: GlobalViewModel) {
     var filter = FilterViewModel()
     filter.updateListado(StaticData().getRutas())
     filter.updateFiltroActividades(StaticData().categorias.toMutableList())
@@ -45,12 +46,12 @@ fun HomeScreenOne(navigationController: NavHostController) {
             }
         }
     ) {
-        EstructuraVentanaHome(filter,navigationController)
+        EstructuraVentanaHome(filter,navigationController,globalViewModel)
     }
 }
 
 @Composable
-private fun EstructuraVentanaHome(filter:FilterViewModel,navigationController: NavHostController) {
+private fun EstructuraVentanaHome(filter:FilterViewModel,navigationController: NavHostController,globalViewModel: GlobalViewModel) {
 
     Column(horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -60,12 +61,12 @@ private fun EstructuraVentanaHome(filter:FilterViewModel,navigationController: N
         Buscador(filter)
         Filtros(filter)
         Separador()
-        ListadoRutas(filter,navigationController)
+        ListadoRutas(filter,navigationController,globalViewModel)
     }
 }
 
 @Composable
-fun ListadoRutas(filter:FilterViewModel,navigationController: NavHostController)
+fun ListadoRutas(filter:FilterViewModel,navigationController: NavHostController,globalViewModel: GlobalViewModel)
 {
     val listaRutas: List<Ruta> by filter.listado.observeAsState(initial = StaticData().getRutas())
 
@@ -78,6 +79,7 @@ fun ListadoRutas(filter:FilterViewModel,navigationController: NavHostController)
         listaRutas.forEach {
             Tarjeta(
                 navigationController,
+                globalViewModel,
                 it,
                 onItemClicked = { card ->
                     navigationController.navigate("card/${card.id}")

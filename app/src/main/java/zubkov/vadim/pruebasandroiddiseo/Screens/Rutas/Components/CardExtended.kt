@@ -1,6 +1,7 @@
 package zubkov.vadim.pruebasandroiddiseo.Components
 
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
@@ -8,31 +9,51 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavHostController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 
 import zubkov.vadim.pruebasandroiddiseo.Dto.StaticData
+import zubkov.vadim.pruebasandroiddiseo.GlobalViewModel
 import zubkov.vadim.pruebasandroiddiseo.Model.Ruta
-import zubkov.vadim.pruebasandroiddiseo.Screens.Rutas.Models.AnimacionCorazon
+import zubkov.vadim.pruebasandroiddiseo.Screens.Rutas.Components.CardExtendedViewModel
+import zubkov.vadim.pruebasandroiddiseo.Screens.Rutas.Models.CorazonFavorito
 import java.text.SimpleDateFormat
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CardExtended(navigationController: NavHostController, idRuta : Int){
-    val ruta = StaticData().getRutas()[idRuta]
+fun CardExtended(navigationController: NavHostController,globalViewModel: GlobalViewModel, idRuta : Int){
+    val cardViewModel = CardExtendedViewModel()
+    val ruta = StaticData().getRuta(idRuta)
+    val tarjetaDeUsuario = globalViewModel.usuarioRegistrado.value!!.id == ruta.usuarioPublicado.id
+    /*
+    val showDialog by cardViewModel.showConfirmarBorrado.observeAsState(initial = false)
+    if (showDialog == true) {
+        DialogoEliminar({cardViewModel.confirmarBorrado(idRuta,navigationController) },
+            {cardViewModel.cerrarConfirmarBorrado() })
+
+    }*/
     Scaffold(
         topBar = {
             TopAppBar(
@@ -60,7 +81,23 @@ fun CardExtended(navigationController: NavHostController, idRuta : Int){
                 },
 
                 actions = {
-                    AnimacionCorazon()
+                    if (!tarjetaDeUsuario) {
+                        CorazonFavorito()
+                    }else{
+                        val interactionSource = MutableInteractionSource()
+                        Icon(
+                            imageVector = Icons.Outlined.Close,
+                            contentDescription = "favorito",
+                            tint = Color.LightGray,
+                            modifier = Modifier
+                                .scale(scale = 1f)
+                                .size(size = 24.dp)
+                                .clickable(
+                                    interactionSource = interactionSource,
+                                    indication = null
+                                ) { /*cardViewModel.openConfirmarBorrado()*/ }
+                        )
+                    }
                 }
             )
         },
@@ -274,9 +311,10 @@ fun ImagenUsuario(navigationController: NavHostController,ruta:Ruta) {
         contentDescription = "Imagen",
         modifier = Modifier
             .size(40.dp)
+            .size(40.dp)
             .clip(CircleShape)
             .background(Color.LightGray)
-            .clickable { navigationController.navigate("user/${ruta.usuarioPublicado.id}/false") }
+            .clickable { navigationController.navigate("user/${ruta.usuarioPublicado.id}/true") }
     )
 }
 
@@ -312,6 +350,86 @@ fun MiniInfoCard(title: String, value: String) {
                 style = MaterialTheme.typography.overline,
                 textAlign = TextAlign.Center
             )
+        }
+    }
+}
+
+/*
+@Composable
+@ExperimentalFoundationApi
+fun DialogoEliminar(
+    onSuccess: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = {onDismiss},
+
+        title = {
+            Text("¿Estás seguro que deseas borrar esta ruta?")
+        },
+        text = {
+            Text("Esta acción no es reversible. ¿Estás seguro que deseas continuar?")
+        },
+        confirmButton = {
+            Row(modifier = Modifier.padding(0.dp,0.dp,55.dp,10.dp)) {
+                Button(
+                    onClick = {onDismiss},
+                ) {
+                    Text("Cancelar")
+                }
+            }
+        },
+        dismissButton = {
+            Row(
+                modifier = Modifier.padding(0.dp,0.dp,0.dp,0.dp)) {
+                Button(
+                    onClick = {onSuccess},
+                ) {
+                    Text("Borrar")
+                }
+            }
+        },
+    )
+}
+*/
+
+@Composable
+private fun DialogoEliminar(
+    onSuccess: () -> Unit,
+    onDismiss: () -> Unit,)
+{
+    Dialog(
+        onDismissRequest = { onDismiss()},
+        properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(20.dp)
+                .fillMaxWidth()
+                .background(Color.White)
+                .height(290.dp)
+                .border(border = BorderStroke(0.3.dp, Color.Black)),
+
+            ) {
+
+            Spacer(modifier = Modifier.height(10.dp))
+            Text("¿Estás seguro que deseas borrar esta ruta?")
+            Spacer(modifier = Modifier.height(30.dp))
+            Text("Esta acción no es reversible. ¿Estás seguro que deseas continuar?")
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(){
+                Button(
+                    onClick = {onSuccess},
+                ) {
+                    Text("Borrar")
+                }
+                Button(
+                        onClick = {onDismiss},
+                ) {
+                Text("Cancelar")
+            }
+
+            }
         }
     }
 }

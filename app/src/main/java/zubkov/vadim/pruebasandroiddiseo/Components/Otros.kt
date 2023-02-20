@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -27,7 +28,7 @@ fun Separador(){
 }
 
 @Composable
-fun AnimacionCorazon() {
+fun CorazonFavorito() {
 
     val interactionSource = MutableInteractionSource()
     val coroutineScope = rememberCoroutineScope()
@@ -60,4 +61,12 @@ fun AnimacionCorazon() {
                 }
             }
     )
+}
+
+
+@Composable
+fun BorrarRuta(
+    onClick: () -> Unit
+) {
+
 }

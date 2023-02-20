@@ -19,6 +19,7 @@ import zubkov.vadim.pruebasandroiddiseo.ui.theme.PruebasAndroidDiseñoTheme
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalPermissionsApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContent {
             PruebasAndroidDiseñoTheme {

@@ -2,7 +2,6 @@ package zubkov.vadim.pruebasandroiddiseo.Screens.Perfil.Components
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
@@ -26,78 +25,98 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import zubkov.vadim.pruebasandroiddiseo.Dto.StaticData
+import zubkov.vadim.pruebasandroiddiseo.GlobalViewModel
 import zubkov.vadim.pruebasandroiddiseo.Model.Usuario
+import zubkov.vadim.pruebasandroiddiseo.Navigation.Routes
 import zubkov.vadim.pruebasandroiddiseo.R
 
 
 @ExperimentalFoundationApi
 @Composable
-fun PerfilUsuario(navigationController: NavHostController, usuario: Usuario, perfilPropio:Boolean = false) {
-    var selectedTabIndex by remember {
-        mutableStateOf(0)
-    }
-    Column(modifier = Modifier.fillMaxWidth().background(Color.LightGray)) {
-        TopBar(
-            name = usuario.nick,
-            !perfilPropio,
-            perfilPropio,
-            navigationController
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        ProfileSection(usuario)
-        Spacer(modifier = Modifier.height(25.dp))
-        ButtonSection(navigationController,modifier = Modifier.fillMaxWidth(),usuario,perfilPropio)
-        Spacer(modifier = Modifier.height(25.dp))
+fun PerfilUsuario(navigationController: NavHostController,globalViewModel: GlobalViewModel, usuario: Usuario,mostrarAtras: Boolean=false) {
 
-        PostTabView(
-            modifier = Modifier.background(MaterialTheme.colors.background),
-            imageWithTexts = listOf(
-                ImageWithText(
-                    image = painterResource(id = R.drawable.iconorutas),
-                    text = "Rutas"
-                ),
-                ImageWithText(
-                    image = painterResource(id = R.drawable.corazon),
-                    text = "Likes"
-                ),
-                ImageWithText(
-                    image = painterResource(id = R.drawable.seguidos),
-                    text = "Seguidos"
-                ),
-                ImageWithText(
-                    image = painterResource(id = R.drawable.seguidores),
-                    text = "Seguidores"
-                ),
-            )
-        ) {
-            selectedTabIndex = it
+        var usuarioPropio = globalViewModel.usuarioRegistrado.value!!.id == usuario.id
+        var selectedTabIndex by remember {
+            mutableStateOf(0)
         }
-        when(selectedTabIndex) {
-            0 -> MostrarRutas(
-                posts = listOf(),
-                modifier = Modifier.fillMaxWidth()
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.LightGray)) {
+            TopBar(
+                name = usuario.nick,
+                mostrarAtras,
+                usuarioPropio,
+                navigationController,
+                globalViewModel
             )
-            1 -> MostrarRutasLikes(
-                posts = listOf(),
-                modifier = Modifier.fillMaxWidth()
+            Spacer(modifier = Modifier.height(4.dp))
+            ProfileSection(usuario)
+            Spacer(modifier = Modifier.height(25.dp))
+            ButtonSection(
+                navigationController,
+                modifier = Modifier.fillMaxWidth(),
+                usuario,
+                usuarioPropio,
+                globalViewModel
             )
-            2 -> MostrarSeguidos(
-                posts = listOf(),
-                modifier = Modifier.fillMaxWidth()
-            )
-            3 -> MostrarSeguidores(
-                posts = listOf(),
-                modifier = Modifier.fillMaxWidth()
-            )
+            Spacer(modifier = Modifier.height(25.dp))
+
+            PostTabView(
+                modifier = Modifier
+                    .background(MaterialTheme.colors.background)
+                    .padding(0.dp, 0.dp, 0.dp, 2.dp),
+                imageWithTexts = listOf(
+                    ImageWithText(
+                        image = painterResource(id = R.drawable.iconorutas),
+                        text = "Rutas"
+                    ),
+                    ImageWithText(
+                        image = painterResource(id = R.drawable.corazon),
+                        text = "Likes"
+                    ),
+                    ImageWithText(
+                        image = painterResource(id = R.drawable.seguidos),
+                        text = "Seguidos"
+                    ),
+                    ImageWithText(
+                        image = painterResource(id = R.drawable.seguidores),
+                        text = "Seguidores"
+                    ),
+                )
+            ) {
+                selectedTabIndex = it
+            }
+            when (selectedTabIndex) {
+                0 -> MostrarRutas(
+                    idRutas = usuario.rutas,
+                    modifier = Modifier.fillMaxWidth(),
+                    navigationController
+                )
+                1 -> MostrarRutas(
+                    idRutas = usuario.rutasSeguidas,
+                    modifier = Modifier.fillMaxWidth(),
+                    navigationController
+                )
+                2 -> MostrarUsuarios(
+                    usuario.seguidos,
+                    modifier = Modifier.fillMaxWidth(),
+                    navigationController
+                )
+                3 -> MostrarUsuarios(
+                    usuario.seguidores,
+                    modifier = Modifier.fillMaxWidth(),
+                    navigationController
+                )
+            }
         }
     }
 
-    }
+
 
 
 @Composable
@@ -105,17 +124,21 @@ fun TopBar(
     name: String,
     mostrarAtras : Boolean,
     mostrarlogout : Boolean,
-    navigationController: NavHostController
+    navigationController: NavHostController,
+    globalViewModel: GlobalViewModel
 ) {
         Box(
-            modifier = Modifier.fillMaxWidth().padding(5.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(5.dp)
         ) {
             if(mostrarAtras) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "Back",
                     tint = Color.Black,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier
+                        .size(24.dp)
                         .align(Alignment.CenterStart)
                         .clickable {
                             navigationController.navigateUp()
@@ -134,7 +157,9 @@ fun TopBar(
             if (mostrarlogout) {
                 IconButton(enabled = true,
                     modifier = Modifier.align(Alignment.CenterEnd),
-                    onClick = { },
+                    onClick = { globalViewModel.logout()
+                              navigationController.navigate(Routes.Home.route)
+                              },
                 ) {
                     Icon(
                         imageVector = Icons.Filled.ExitToApp,
@@ -166,7 +191,7 @@ fun ProfileSection(
                     .weight(3f)
             )
             Spacer(modifier = Modifier.width(16.dp))
-            StatSection(modifier = Modifier.weight(7f))
+            StatSection(modifier = Modifier.weight(7f),usuario)
         }
     }
 }
@@ -192,15 +217,15 @@ fun RoundImage(
 }
 
 @Composable
-fun StatSection(modifier: Modifier = Modifier) {
+fun StatSection(modifier: Modifier = Modifier,usuario: Usuario) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround,
         modifier = modifier
     ) {
-        ProfileStat(numberText = "100", text = "Rutas")
-        ProfileStat(numberText = "100", text = "Seguidores")
-        ProfileStat(numberText = "20", text = "Siguiendo")
+        ProfileStat(numberText = usuario.rutas.size.toString() , text = "Rutas")
+        ProfileStat(numberText = usuario.seguidores.size.toString(), text = "Seguidores")
+        ProfileStat(numberText = usuario.seguidos.size.toString(), text = "Siguiendo")
     }
 }
 
@@ -230,7 +255,8 @@ fun ButtonSection(
     navigationController: NavHostController,
     modifier: Modifier = Modifier,
     usuario:Usuario,
-    perfilPropio : Boolean
+    perfilPropio : Boolean,
+    globalViewModel : GlobalViewModel
 ) {
     val minWidth = 175.dp
     val height = 35.dp
@@ -238,26 +264,22 @@ fun ButtonSection(
         horizontalArrangement = Arrangement.SpaceEvenly,
         modifier = modifier
     ) {
-        BotonUser(
-            navigationController,
-            usuario.id,
-            perfilPropio,
+        BotonDetalleUser(
             icon = Icons.Outlined.Person,
             text = "Datos  ",
             modifier = Modifier
                 .defaultMinSize(minWidth = minWidth)
-                .height(height)
+                .height(height),
+            navigationController = navigationController,
+            userId = usuario.id
         )
         if (!perfilPropio) {
-            BotonUser(
-                navigationController,
-                usuario.id,
-                perfilPropio,
-                text = "Seguir  ",
-                icon = Icons.Filled.Check,
+            BotonSeguirUser(
                 modifier = Modifier
                     .defaultMinSize(minWidth = minWidth)
-                    .height(height)
+                    .height(height),
+                globalViewModel,
+                usuario.id
             )
         }
     }
@@ -265,21 +287,19 @@ fun ButtonSection(
 
 
 @Composable
-fun BotonUser(
-navigationController: NavHostController,
-idUser:Int,
-editable:Boolean,
+fun BotonDetalleUser(
 modifier: Modifier = Modifier,
 text: String? = null,
 icon: ImageVector? = null,
-
+navigationController: NavHostController,
+userId:Int
 ) {
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .clickable{
-                navigationController.navigate("userDetail/$idUser/$editable")
+            .clickable {
+                navigationController.navigate("userdetail/$userId")
             }
             .background(Color.LightGray, shape = RoundedCornerShape(12.dp))
             .clip(RoundedCornerShape(12.dp))
@@ -304,6 +324,44 @@ icon: ImageVector? = null,
                 tint = Color.Black
             )
         }
+    }
+}
+
+@Composable
+fun BotonSeguirUser(
+    modifier: Modifier = Modifier,
+    globalViewModel: GlobalViewModel,
+    idUser:Int
+) {
+    val usuarioSiguiendo = globalViewModel.usuarioRegistrado.value!!.seguidos
+    var siguiendo by remember {mutableStateOf(usuarioSiguiendo.contains(idUser))}
+
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .clickable {
+                siguiendo = !siguiendo
+            }
+            .background(Color.LightGray, shape = RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(12.dp))
+            .border(
+                width = 1.5.dp,
+                color = MaterialTheme.colors.background,
+                shape = RoundedCornerShape(12.dp)
+            )
+            .padding(6.dp)
+    ) {
+        Text(
+            text = if (siguiendo) "Dejar de seguir  " else "Seguir  ",
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 14.sp
+        )
+        Icon(
+            imageVector = if (siguiendo) Icons.Filled.Close else Icons.Filled.Check ,
+            contentDescription = null,
+            tint = if (siguiendo) Color.Red else Color.Green
+        )
     }
 }
 
@@ -349,101 +407,40 @@ fun PostTabView(
 @ExperimentalFoundationApi
 @Composable
 fun MostrarRutas(
-    posts: List<Painter>,
-    modifier: Modifier = Modifier
+    idRutas: List<Int>,
+    modifier: Modifier = Modifier,
+    navigationController: NavHostController
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         modifier = modifier
             .scale(1.01f)
+            .fillMaxSize()
     ) {
-        items(posts.size) {
-
+        items(idRutas.size) {
+            CardRuta(StaticData().getRuta(it),navigationController)
         }
     }
 }
 
 @ExperimentalFoundationApi
 @Composable
-fun MostrarRutasLikes(
-    posts: List<Painter>,
-    modifier: Modifier = Modifier
+fun MostrarUsuarios(
+    idUsers: List<Int>,
+    modifier: Modifier = Modifier,
+    navigationController: NavHostController
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
+        columns = GridCells.Fixed(1),
         modifier = modifier
             .scale(1.01f)
+            .fillMaxHeight()
     ) {
-        items(posts.size) {
-            Image(
-                painter = posts[it],
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .aspectRatio(1f)
-                    .border(
-                        width = 1.dp,
-                        color = Color.White
-                    )
-            )
+        items(idUsers.size) {
+            CardUsuario(StaticData().getUsuario(it),navigationController)
         }
     }
 }
-
-@ExperimentalFoundationApi
-@Composable
-fun MostrarSeguidos(
-    posts: List<Painter>,
-    modifier: Modifier = Modifier
-) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
-        modifier = modifier
-            .scale(1.01f)
-    ) {
-        items(posts.size) {
-            Image(
-                painter = posts[it],
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .aspectRatio(1f)
-                    .border(
-                        width = 1.dp,
-                        color = Color.White
-                    )
-            )
-        }
-    }
-}
-
-@ExperimentalFoundationApi
-@Composable
-fun MostrarSeguidores(
-    posts: List<Painter>,
-    modifier: Modifier = Modifier
-) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
-        modifier = modifier
-            .scale(1.01f)
-    ) {
-        items(posts.size) {
-            Image(
-                painter = posts[it],
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .aspectRatio(1f)
-                    .border(
-                        width = 1.dp,
-                        color = Color.White
-                    )
-            )
-        }
-    }
-}
-
 
 data class ImageWithText(
     val image: Painter,

@@ -21,10 +21,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import zubkov.vadim.pruebasandroiddiseo.Dto.StaticData
-import zubkov.vadim.pruebasandroiddiseo.Screens.Rutas.Models.AnimacionCorazon
+import zubkov.vadim.pruebasandroiddiseo.GlobalViewModel
+import zubkov.vadim.pruebasandroiddiseo.Screens.Rutas.Models.BorrarRuta
+import zubkov.vadim.pruebasandroiddiseo.Screens.Rutas.Models.CorazonFavorito
 
 @Composable
-fun Tarjeta(navigationController: NavHostController, ruta: Ruta, onItemClicked: (ruta: Ruta) -> Unit) {
+fun Tarjeta(navigationController: NavHostController,globalViewModel: GlobalViewModel, ruta: Ruta, onItemClicked: (ruta: Ruta) -> Unit) {
+    val tarjetaDeUsuario = globalViewModel.usuarioRegistrado.value!!.id == ruta.usuarioPublicado.id
     Card(
         modifier = Modifier
             .padding(10.dp)
@@ -46,13 +49,14 @@ fun Tarjeta(navigationController: NavHostController, ruta: Ruta, onItemClicked: 
                     style = MaterialTheme.typography.h6,
                     modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 0.dp)
                 )
-
             }
             IconButton(
                 onClick = { /* Acción al hacer clic en el botón */ },
                 modifier = Modifier.size(48.dp)
             ) {
-                AnimacionCorazon()
+                if(!tarjetaDeUsuario) {
+                    CorazonFavorito()
+                }
             }
         }
         Row(
@@ -123,7 +127,7 @@ fun Tarjeta(navigationController: NavHostController, ruta: Ruta, onItemClicked: 
                         modifier = Modifier
                             .size(48.dp)
                             .clip(RoundedCornerShape(14.dp))
-                            .clickable { navigationController.navigate("user/${ruta.usuarioPublicado.id}/false") }
+                            .clickable { navigationController.navigate("user/${ruta.usuarioPublicado.id}/true") }
                     )
                     Text(
                         text = " ${ruta.usuarioPublicado.nick}",

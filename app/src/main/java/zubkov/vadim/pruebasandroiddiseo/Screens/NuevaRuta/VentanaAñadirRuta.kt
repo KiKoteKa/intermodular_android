@@ -18,11 +18,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import zubkov.vadim.pruebasandroiddiseo.Components.CardExtendedComp
-import zubkov.vadim.pruebasandroiddiseo.Screens.Rutas.Models.AnimacionCorazon
+import zubkov.vadim.pruebasandroiddiseo.GlobalViewModel
 
 @Composable
-fun AddRutaScreen(navigationController: NavHostController) {
+fun AddRutaScreen(navigationController: NavHostController,globalViewModel: GlobalViewModel) {
     Scaffold(
         topBar = {
             TopAppBar(

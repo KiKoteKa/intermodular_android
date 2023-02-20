@@ -26,6 +26,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
+import zubkov.vadim.pruebasandroiddiseo.GlobalViewModel
 import zubkov.vadim.pruebasandroiddiseo.Screens.Scaffold.BottomBarContent
 import zubkov.vadim.pruebasandroiddiseo.Screens.Scaffold.TopBarContent
 
@@ -33,7 +34,7 @@ import zubkov.vadim.pruebasandroiddiseo.Screens.Scaffold.TopBarContent
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun MapaGoogle(navigationController: NavHostController) {
+fun MapaGoogle(navigationController: NavHostController,globalViewModel: GlobalViewModel) {
     val locationPermissionState = rememberPermissionState(
         Manifest.permission.ACCESS_COARSE_LOCATION
     )

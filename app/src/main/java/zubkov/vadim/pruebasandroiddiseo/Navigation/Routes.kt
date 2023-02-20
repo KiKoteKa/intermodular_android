@@ -9,6 +9,6 @@ sealed class Routes(val route: String) {
     object Gmap: Routes("gmap")
     object Users: Routes("users")
     object NewRuta: Routes("newruta")
-    object UserDetail: Routes("userdetail/{userId}/{editable}")
-    object User: Routes("user/{userId}/{editable}")
+    object UserDetail: Routes("userdetail/{userId}")
+    object User: Routes("user/{userId}/{mostrarAtras}")
 }

@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
 
-class MainActivityViewModel : ViewModel() {
+class MapActivityViewModel : ViewModel() {
 
     private var _isNewLocationSelected = MutableLiveData(false)
     var isNewLocationSelected : MutableLiveData<Boolean> = _isNewLocationSelected

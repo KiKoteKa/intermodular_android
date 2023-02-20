@@ -20,23 +20,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import zubkov.vadim.pruebasandroiddiseo.Dto.StaticData
+import zubkov.vadim.pruebasandroiddiseo.GlobalViewModel
 import zubkov.vadim.pruebasandroiddiseo.Model.Usuario
 import zubkov.vadim.pruebasandroiddiseo.R
 import zubkov.vadim.pruebasandroiddiseo.Screens.Perfil.Components.TopBar
 import java.text.SimpleDateFormat
 
-//Ocultar en el Usuario Ajeno, el Botón LogOut, y el Botón Editar Perfil
 @Composable
-fun PerfilUsuarioDetalle(navigationController: NavHostController, idUsuario : Int, editable:Boolean){
+fun PerfilUsuarioDetalle(navigationController: NavHostController, idUsuario : Int,globalViewModel: GlobalViewModel){
     val usuario = StaticData().getUsuarios()[idUsuario]
+    val usuarioPropio = globalViewModel.usuarioRegistrado?.value?.id == usuario.id
     Column(modifier = Modifier.fillMaxWidth().background(Color.LightGray)) {
         TopBar(
             name = usuario.nick,
             true,
             false,
-            navigationController
+            navigationController,
+            globalViewModel
         )
-        PerfilUsuarioDetalleComp(usuario, editable)
+        PerfilUsuarioDetalleComp(usuario, usuarioPropio)
     }
 }
 
@@ -45,7 +47,8 @@ fun PerfilUsuarioDetalleComp(usuario: Usuario,editable:Boolean) {
     Column(horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
-            .border(border = BorderStroke(0.3.dp, Color.Black)))
+            .border(border = BorderStroke(0.3.dp, Color.Black))
+            .verticalScroll(rememberScrollState()))
     {
         Spacer(modifier = Modifier.height(25.dp))
         ImagenRedonda(usuario.imagen)
@@ -53,9 +56,11 @@ fun PerfilUsuarioDetalleComp(usuario: Usuario,editable:Boolean) {
         Texto(usuario.apellidos, " Apellidos", Icons.Default.AccountBox)
         Texto(usuario.email, " Email", Icons.Default.Email)
         Texto(SimpleDateFormat("dd/MM/yyyy").format(usuario.fechaNacimiento), " F.Nacimiento", Icons.Default.DateRange)
+        TextoDescripcion(usuario.descripcion,"Descripción")
         if (editable) {
             BotonEditarPerfil(text = "Editar Perfil ", icon = Icons.Default.Settings)
         }
+        Spacer(modifier = Modifier.height(25.dp))
     }
 }
 
@@ -74,6 +79,38 @@ fun Texto(valor:String,texto:String,icono:ImageVector = Icons.Default.Person){
                 )
             }
             Row(modifier = Modifier.width(LocalConfiguration.current.screenWidthDp.dp*2/ 3), horizontalArrangement = Arrangement.End) {
+                Text(
+                    color = Color.White,
+                    text = valor,
+                    fontSize = 16.sp
+                )
+            }
+        }
+        Divider(color = Color.White, modifier = Modifier
+            .fillMaxWidth()
+            .padding(5.dp, 10.dp)
+            .height(1.3.dp))
+    }
+}
+
+@Composable
+fun TextoDescripcion(valor:String,texto:String){
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(30.dp, 2.dp)) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Row(modifier = Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.Center) {
+                Text(
+                    text = texto,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Divider(color = Color.White, modifier = Modifier
+                .fillMaxWidth()
+                .padding(2.dp, 10.dp)
+                .height(0.6.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 Text(
                     color = Color.White,
                     text = valor,
